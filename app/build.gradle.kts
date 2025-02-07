@@ -1,12 +1,15 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.konan.properties.Properties
 import java.io.FileInputStream
+import org.lineageos.generatebp.GenerateBpPluginExtension
+import org.lineageos.generatebp.models.Module
 
 plugins {
     alias(libs.plugins.android)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.ksp)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.lineageos.generatebp)
 }
 
 val keystorePropertiesFile: File = rootProject.file("keystore.properties")
@@ -139,4 +142,24 @@ dependencies {
 
     implementation(libs.bundles.room)
     ksp(libs.androidx.room.compiler)
+}
+
+configure<GenerateBpPluginExtension> {
+    targetSdk.set(android.defaultConfig.targetSdk!!)
+    minSdk.set(android.defaultConfig.minSdk!!)
+    availableInAOSP.set { module: Module ->
+        when {
+            module.group.startsWith("androidx") -> {
+                // We provide our own androidx.media3
+                !module.group.startsWith("androidx.media3")
+            }
+
+            module.group.startsWith("org.jetbrains") -> true
+            module.group == "com.google.android.material" -> true
+            module.group == "com.google.auto.value" -> true
+            module.group == "com.google.guava" -> true
+            module.group == "junit" -> true
+            else -> false
+        }
+    }
 }

@@ -39,6 +39,7 @@ app-build-targetSDK = "34"
 app-build-minimumSDK = "26"
 app-build-javaVersion = "VERSION_17"
 app-build-kotlinJVMTarget = "17"
+generateBp = "+"
 #versioning
 app-version-appId = "org.fossify.gallery"
 app-version-versionCode = "9"
@@ -83,3 +84,4 @@ android = { id = "com.android.application", version.ref = "gradlePlugins-agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+lineageos-generatebp = { id = "org.lineageos.generatebp", version.ref = "generateBp" }
